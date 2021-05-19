@@ -31,11 +31,11 @@ class Miner {
        //2.
        const block = this.blockchain.addBlock(memoryPool.transactions);
        //3.
-       p2pservice.sync();
+       //p2pservice.sync();
        //4.
        memoryPool.wipe();
        //5.
-       p2pservice.broadcast(MESSAGE.WIPE);
+       //p2pservice.broadcast(MESSAGE.WIPE);
        return block;
 
     }

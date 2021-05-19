@@ -25,7 +25,7 @@ mongoose.connect(connectionUrl, {
 
 //HTTP_PORT => Variable d'entorn
 //Posem port al HTTP (3000 per defecte)
-const { HTTP_PORT = 3001} = process.env;
+const  HTTP_PORT = process.env.PORT  || 3001;
 
 //creem app d'express
 
@@ -65,7 +65,7 @@ app.post('/mine', (req,res) => {
 
     const block = blockchain.addBlock(data);
     //si minamos un bloque, enviamos mensaje a todos los nodos con los bloques que tenemos, con el nuevo bloque minado
-    p2pService.sync();
+    //p2pService.sync();
     //retornem resposta(num de blocs, bloc)
     res.json({
         blocks: blockchain.blocks.length,
@@ -88,7 +88,7 @@ app.post('/transaction', (req,res) => {
     
     try {
         const tx = wallet.createTransaction(recipient,amount2);
-        p2pService.broadcast(MESSAGE.TX, tx);
+        //p2pService.broadcast(MESSAGE.TX, tx);
         res.json(tx);
     } catch (error) {
     res.json({ error: error.message });
@@ -209,6 +209,6 @@ app.post('/addReferral', (req,res) => {
 app.listen(HTTP_PORT, () => {
     console.log(`Service HTTP: ${HTTP_PORT}listening...`);
     //una vez tenemos el servicio levantado, escuchamos 
-    p2pService.listen();
+    //p2pService.listen();
 });
 
