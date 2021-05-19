@@ -13,13 +13,13 @@ import Miner from '../miner/miner.js'
 import User from './models/users.db.js'
 import usersDb from './models/users.db.js';
 
-const connectionUrl = 'mongodb+srv://admin:ZHmCCPWOb6aagC8o@cluster0.d1r0v.mongodb.net/INIS?retryWrites=true&w=majority';
+
+const connectionUrl = process.env.MONGODB_URI;
 mongoose.connect(connectionUrl, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-
 
 
 
