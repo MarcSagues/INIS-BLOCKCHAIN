@@ -14,7 +14,7 @@ import User from './models/users.db.js'
 import usersDb from './models/users.db.js';
 
 
-const connectionUrl = process.env.MONGODB_URI;
+const connectionUrl = process.env.MONGODB_URI ;
 mongoose.connect(connectionUrl, {
     useCreateIndex: true,
     useNewUrlParser: true,
