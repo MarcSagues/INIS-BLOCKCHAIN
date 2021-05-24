@@ -11,11 +11,14 @@ import P2PService, {MESSAGE} from './p2p.js';
 import Wallet from '../wallet/wallet.js';
 import Miner from '../miner/miner.js'
 import User from './models/users.db.js'
+import UserBase from './models/users_inis_ecosystem.db.js'
 import usersDb from './models/users.db.js';
 
 
 const connectionUrl = process.env.MONGODB_URI ;
-mongoose.connect(connectionUrl, {
+const connectionUrlLocal = 'mongodb+srv://admin:ZHmCCPWOb6aagC8o@inisbase.dvofw.mongodb.net/INIS?retryWrites=true&w=majority' ;
+
+mongoose.connect(connectionUrlLocal, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -128,14 +131,21 @@ app.get('/users', (req,res) => {
 
 app.post('/addUser', (req,res) => {
     if (req.body !== null) {
-
+        UserBase.create({
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          wallet: req.body.wallet,
+          amount: req.body.amount,
+          creation: req.body.creation,
+          
+      }, (err, data) => {
+          if (err) {
+            res.status(500).send('ERR');
+          } 
+        })   
         User.create({
             username: req.body.username,
-            email: req.body.email,
-            password: req.body.password,
-            wallet: req.body.wallet,
-            amount: req.body.amount,
-            creation: req.body.creation,
             referralLink: req.body.referralLink,
             referralLider: req.body.referralLider,
             referralCount: 0,
@@ -185,6 +195,13 @@ app.get('/getUserByUsername', (req,res) => {
     });
 })
 
+app.get('/getTransactionsByWallet', (req,res) => {
+  UserBase.find(
+    {wallet: req.body.wallet},
+  )
+  const { memoryPool: { transactions } } = blockchain;
+  res.json(transactions);
+})
 
 app.post('/addReferral', (req,res) => {
   if (req.body !== null) {
