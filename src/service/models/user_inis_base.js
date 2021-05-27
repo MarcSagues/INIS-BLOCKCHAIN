@@ -9,4 +9,4 @@ const userSchema = mongoose.Schema({
     creation: String,
   });
   
-  export default mongoose.model("users_inis_ecosystem", userSchema);
+  export default mongoose.model("users_inis_base", userSchema);
