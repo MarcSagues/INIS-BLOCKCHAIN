@@ -13,11 +13,11 @@ import Miner from '../miner/miner.js'
 import User from './models/users.db.js'
 import UserBase from './models/user_inis_base.js'
 
-import {  addReferral, addTransaction, addUser, createWallet, getBlocks, getTransactions, getTransactionsByWallet, getUserByUsername, getUsers, minePost, mineTransaction } from './apicalls/inisBaseCalls.js';
+import {  addReferral, addTransaction, addUser, createWallet, getBlocks, getTransactions, getTransactionsByWallet, getUserByUsername, getUsers, loginUser, minePost, mineTransaction } from './apicalls/inisBaseCalls.js';
 
 
 const connectionUrl = process.env.MONGODB_URI ;
-const connectionUrlLocal = 'mongodb+srv://admin:ZHmCCPWOb6aagC8o@inisbase.dvofw.mongodb.net/INIS?retryWrites=true&w=majority' ;
+const connectionUrlLocal = 'mongodb+srv://admin:ZHmCCPWOb6aagC8o@inisbase.dvofw.mongodb.net/INIS_BASE?retryWrites=true&w=majority' ;
 
 mongoose.connect(connectionUrlLocal, {
     useCreateIndex: true,
@@ -70,6 +70,8 @@ getTransactionsByWallet(app);
 addReferral(app);
 
 createWallet(app);
+
+loginUser(app);
 
 app.listen(HTTP_PORT, () => {
     console.log(`Service HTTP: ${HTTP_PORT}listening...`);

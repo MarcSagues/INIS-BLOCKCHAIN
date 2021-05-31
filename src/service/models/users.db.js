@@ -2,10 +2,8 @@ import mongoose from 'mongoose';
 
 const userSchema = mongoose.Schema({
     username: String,
+    email: String,
     dateNowClick: String,
-    referralLink: String,
-    referralLider: String,
-    referralCount: Number,
   });
   
-  export default mongoose.model("users", userSchema);
+  export default mongoose.model("users_", userSchema);

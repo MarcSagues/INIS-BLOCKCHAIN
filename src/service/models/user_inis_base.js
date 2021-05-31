@@ -6,7 +6,10 @@ const userSchema = mongoose.Schema({
     password: String,
     wallet: String,
     amount: Number,
+    referralLink: String,
+    referralLider: String,
+    referralCount: Number,
     creation: String,
   });
   
-  export default mongoose.model("users_inis_base", userSchema);
+  export default mongoose.model("users", userSchema);

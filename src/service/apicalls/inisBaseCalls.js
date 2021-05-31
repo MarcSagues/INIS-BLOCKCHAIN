@@ -3,7 +3,6 @@ import Wallet from '../../wallet/wallet.js';
 import Blockchain from '../../blockchain/blockchain.js';
 import P2PService from '../p2p.js';
 import UserBase from '../models/user_inis_base.js'
-import User from '../models/user_inis_base.js'
 
 
 
@@ -104,6 +103,9 @@ export const addUser = (app) => {
               password: req.body.password,
               wallet: wallet.publicKey,
               amount: req.body.amount,
+              referralLink: req.body.referralLink,
+              referralLider: req.body.referralLider,
+              referralCount: 0,
               creation: req.body.creation,
               
           }, (err, data) => {
@@ -111,7 +113,7 @@ export const addUser = (app) => {
                 res.status(500).send('ERR');
               } 
             })   
-            User.create({
+            /*User.create({
                 username: req.body.username, 
                 referralLink: req.body.referralLink,
                 referralLider: req.body.referralLider,
@@ -124,14 +126,14 @@ export const addUser = (app) => {
                 } else {
                   res.status(200).send(data);
                 }
-        })
+        })*/
             }    
     })
 }
 
 export const getUsers = (app) => {
     app.get('/users', (req,res) => {
-        User.find(
+        UserBase.find(
             /* si volem filtrar per username --> { username: 'user1' },*/
          (err, data) => {
             if (err) {
@@ -149,7 +151,7 @@ export const addAmount = (app) => {
           const filter = {wallet: req.body.wallet};
           const updateAmount = {amount: req.body.amount, dateNowClick: req.body.dateNowClick}
           
-            User.findOneAndUpdate(filter,updateAmount,{
+            UserBase.findOneAndUpdate(filter,updateAmount,{
           
                 new: true
       
@@ -168,7 +170,7 @@ export const addAmount = (app) => {
 
 export const getUserByUsername = (app) => {
     app.get('/getUserByUsername', (req,res) => {
-        User.find(
+        UserBase.find(
           {username: req.body.username},
             /* si volem filtrar per username --> { username: 'user1' },*/
          (err, data) => {
@@ -188,7 +190,7 @@ export const addReferral = (app) => {
           const filter = {username: req.body.username};
           const updateAmount = {referralCount: req.body.referralCount}
           
-            User.findOneAndUpdate(filter,updateAmount,{
+            UserBase.findOneAndUpdate(filter,updateAmount,{
           
                 new: true
       
@@ -211,6 +213,34 @@ export const getTransactionsByWallet = (app) => {
         const { memoryPool: { transactions } } = blockchain;
         res.json(transactions);
       })
+}
+
+export const loginUser = (app) => {
+  app.get('/loginUser', (req,res) => {
+    console.log(req.query.email, req.query.password)
+    UserBase.findOne(
+      {email: req.query.email},
+      
+        /* si volem filtrar per username --> { username: 'user1' },*/
+     (err, data) => {
+        if (err) {
+          res.status(500).send('USER NOT FOUND');
+        } else {
+          if(data){
+          
+          if(req.query.password === data.password){
+          res.status(200).send(data);
+
+          } else {
+          res.status(205).send('PASSWORD INCORRECT');
+          }
+        } else {
+          res.status(206).send('USER NOT FOUND');
+
+        }
+        }
+      });
+  })
 }
 
 
